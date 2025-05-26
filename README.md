@@ -1,73 +1,94 @@
-# Domus Back-End Developer Challenge.
+# Challenge Domus
 
-## Description 
+## Description
+This project is a REST API implementation that allows retrieving movie directors based on a movie count threshold.
 
-In this challenge, the REST API contains information about a collection of movies released after the year 2010, directed by acclaimed directors.
-Given a threshold value, your task is to use the API to retrieve a list of directors who have directed more movies than the specified threshold. Specifically, the API should return the names of directors whose movie count is strictly greater than the given threshold, sorted alphabetically.
+## Technologies Used
+- Java 21
+- Spring Boot 3.4.5
+- Spring WebFlux
+- Caffeine Cache
+- Lombok
+- Swagger/OpenAPI
+- JUnit 5
+- Mockito
 
-To access the movie collection, perform an HTTP GET request to the following endpoint:
+## Requirements
+- Java 21 or higher
+- Maven 3.8.x or higher
 
-```
-https://challenge.iugolabs.com/api/movies/search?page=<pageNumber>
-```
+## Configuration
+1. Clone the repository
+2. Configure environment variables:
+   ```bash
+   EXTERNAL_API_URL=https://api.example.com/movies
+   EXTERNAL_API_TIMEOUT=5000
+   EXTERNAL_API_RETRY_ATTEMPTS=3
+   EXTERNAL_API_RETRY_DELAY=1000
+   ```
 
-where <pageNumber> is an integer denoting the page of the results to return.
-
-The response to such request is a JSON with the following 5 fields:
-
-- page: The current page of the results
-- per_page: The maximum number of movies returned per page.
-- total: The total number of movies on all pages of the result.
-- total_pages: The total number of pages with results.
-- data: An array of objects containing movies returned on the requested page
-
-Each movie record has the following schema:
-
-- Title: title of the movie
-- Year: year the movie was released
-- Rated: movie rating
-- Released: movie release date
-- Runtime: movie duration time in minutes
-- Genre: move genre
-- Director: movie director
-- Writer: movie writer 
-- Actors: movie actors  
-
-##  Task
-
-Fork the provided repository and implement a REST API endpoint using the provided template:
-
-```
-/api/directors?threshold=X
+## Execution
+```bash
+mvn spring-boot:run
 ```
 
-This endpoint must return a JSON object containing the names of directors whose number of movies directed is strictly greater than the given threshold.
+## Endpoints
+- `GET /api/directors?threshold=X`: Get directors with more than X movies
+- `GET /actuator/health`: Application status
+- `GET /swagger-ui.html`: API documentation
 
-The names should be returned in alphabetical order.
-
-Sample : `/api/directors?threshold=4`
-
-Json response:
+## Project Structure
 ```
-{  "directors": ["Martin Scorsese","Woody Allen"] }
+src/
+├── main/
+│   ├── java/
+│   │   └── com/
+│   │       └── domus/
+│   │           └── challenge/
+│   │               ├── controller/
+│   │               ├── service/
+│   │               ├── client/
+│   │               ├── model/
+│   │               └── exception/
+│   └── resources/
+│       └── application.yml
+└── test/
+    └── java/
+        └── com/
+            └── domus/
+                └── challenge/
+                    ├── controller/
+                    ├── service/
+                    └── client/
 ```
 
-## Criteria
+## Features
+- Reactive programming with WebFlux
+- Caching with Caffeine
+- Global error handling
+- Swagger documentation
+- Unit and integration tests
+- Environment-based configuration
+- Actuator monitoring
 
-Some things we'll evaluate are:
+## License
+This project is under the MIT License.
 
-- Correctness: The solution must return accurate results based on the given threshold. Ensure the route and query parameters are handled correctly.
-- Fail proof: The solution should handle errors and edge cases gracefully. Negative threshold values should return an empty list. Non-number thresholds should return an error message.
-- Tests: The solution should have tests.
-- Prefer newer technologies such as WebFlux over traditional RestTemplate.
-- Implement an intelligent solution for handling pagination.
-- Include Swagger documentation with detailed endpoint descriptions.
-- Documentation: Create an .md file explaining the solution and considerations.
-- Use external libraries like Lombok to facilitate things.
-- Correct use of Spring decorators such as @Service and @Autowired.
+# Domus Directors API
 
-## Submission
+A Spring WebFlux-based REST API that returns directors who have directed more movies than a specified threshold.
 
-1. Fork the repository as a public repository.
-2. Implement the solution.
-3. Link the repository to the person who sent you the challenge.
+## 🧠 Problem Statement
+
+Given a paginated public API of movies released after 2010, implement an endpoint that:
+
+- Calls the external movie API,
+- Counts how many movies each director has directed,
+- Filters the directors whose movie count is greater than a given threshold,
+- Returns the result sorted alphabetically.
+
+## 📦 API Endpoint
+
+**GET** `/api/directors?threshold=X`
+
+**Example:**

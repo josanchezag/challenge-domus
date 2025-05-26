@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: domus-directors-api
+
+domus:
+  external-api:
+    movies-url: https://challenge.iugolabs.com/api/movies/search
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+
+external:
+  api:
+    endpoint: https://challenge.iugolabs.com/api/movies/search?page=<pageNumber>

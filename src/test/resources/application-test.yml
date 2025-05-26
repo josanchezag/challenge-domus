@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: challenge-domus
+  webflux:
+    base-path: /api
+  main:
+    web-application-type: reactive
+
+server:
+  port: 0  # Random port for testing
+
+# Actuator configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+# Swagger/OpenAPI configuration
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+
+# Logging configuration for tests
+logging:
+  level:
+    root: INFO
+    com.domus.challenge: DEBUG
+    org.springframework.web: INFO
+    reactor.netty: INFO
+
+# External API configuration (mock)
+external:
+  api:
+    url: https://challenge.iugolabs.com/api/movies/search
+    timeout: 5000
+    retry:
+      attempts: 3
+      delay: 1000 
