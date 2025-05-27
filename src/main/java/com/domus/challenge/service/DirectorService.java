@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -15,13 +17,21 @@ public class DirectorService {
     private final MovieCacheLoader cacheLoader;
 
     public List<String> getDirectorsWithThreshold(int threshold) {
-        Map<String, Long> directorCount = cacheLoader.getCachedMovies().stream()
-                .collect(Collectors.groupingBy(Movie::getDirector, Collectors.counting()));
+        List<Movie> movies = Optional.ofNullable(cacheLoader.getCachedMovies())
+                .orElse(List.of());
 
-        return directorCount.entrySet().stream()
+        if (movies.isEmpty() || threshold < 0) {
+            return List.of();
+        }
+
+        return movies.stream()
+                .map(Movie::getDirector)
+                .filter(Objects::nonNull)
+                .collect(Collectors.groupingBy(director -> director, Collectors.counting()))
+                .entrySet().stream()
                 .filter(entry -> entry.getValue() > threshold)
                 .map(Map.Entry::getKey)
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
     }
 }

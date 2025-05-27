@@ -42,7 +42,7 @@ public class MovieClient {
 
                 if (response != null && response.getData() != null) {
                     allMovies.addAll(response.getData());
-                    totalPages = response.getTotal_pages();
+                    totalPages = response.getTotalPages();
                     log.debug("Successfully fetched page {} of {}", page, totalPages);
                 } else {
                     log.warn("Empty response received for page {}", page);
